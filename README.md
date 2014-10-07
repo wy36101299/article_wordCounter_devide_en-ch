@@ -7,6 +7,7 @@ article_wordCounter_devide_en-ch
 文章存放于Data folder中，並輸出Json folder 檔案格式為json  
 英文分離方法為切空白  
 中文分離方法為使用 [jieba](https://github.com/fxsjy/jieba)  
+並且生成一個 index.json 的檔案列表
 
 #如何使用
 把要分析的文章放到Data folder即可，檔案格式需為 .txt  
@@ -15,3 +16,7 @@ article_wordCounter_devide_en-ch
 #example
 Data folder 兩篇文章 test1.txt,test2.txt  
 Json folder 輸出  test1.json,test2.json  
+index.json：
+
+    "0": "test1", 
+    "1": "test2"
