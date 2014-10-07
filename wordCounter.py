@@ -2,6 +2,7 @@
 import re
 import sys
 import json
+import glob 
 import jieba
 
 class WordCounter(object):
@@ -9,10 +10,8 @@ class WordCounter(object):
 	def __init__(self):
 		reload(sys)
 		sys.setdefaultencoding('utf-8')
-		self.l =[]
 		self.data_en = ""
 		self.data_ch = ""
-		self.datapath = '你的文章.txt'
 
 	def filter(self,article):
 		re.sub("《|》|，|。|？|：|！|……|——|,|-|!|\.|<|>|\?|:|\r|\n","", article);
@@ -30,21 +29,25 @@ class WordCounter(object):
 	        artdic[a]=artdic.get(a,0)+1
 	    return artdic
 
-	def storage(self,en_artdic,ch_artdic):
+	def storage(self,en_artdic,ch_artdic,name):
 		a = en_artdic.copy()
 		a.update(ch_artdic)
-		with open('data.json', 'w') as f:
+		with open('./Json/'+name+'.json', 'w') as f:
 			f.write( json.dumps(a, encoding="UTF-8",indent = 4,sort_keys = True, ensure_ascii=False) )
 
 	def run(self):
-		with open(self.datapath, 'r') as f:
-		    article = f.read()
-		self.filter(article)
-		self.storage( self.freqdict(self.data_en) , self.freqdict(self.data_ch) )
-
+		path = './Data/*.txt'   
+		paths=glob.glob(path)
+		for index, tmp in enumerate(paths):
+			a = tmp.split('/')
+			name = a[2].split('.')
+			with open(tmp, 'r') as f:
+			    article = f.read()
+			self.filter(article)
+			self.storage( self.freqdict(self.data_en) , self.freqdict(self.data_ch) ,name[0] )
+			print('creat'+'--'+str(index)+'--'+name[0]+'.json')
 #主函數
 def main() :
-
     wordCounter = WordCounter()
     wordCounter.run()
 
