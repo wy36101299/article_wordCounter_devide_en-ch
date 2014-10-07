@@ -38,6 +38,7 @@ class WordCounter(object):
 	def run(self):
 		path = './Data/*.txt'   
 		paths=glob.glob(path)
+		dic ={}
 		for index, tmp in enumerate(paths):
 			a = tmp.split('/')
 			name = a[2].split('.')
@@ -46,7 +47,12 @@ class WordCounter(object):
 			self.filter(article)
 			self.storage( self.freqdict(self.data_en) , self.freqdict(self.data_ch) ,name[0] )
 			print('creat'+'--'+str(index)+'--'+name[0]+'.json')
-#主函數
+			dic[index]=name[0]
+
+		with open('./Json/index.json', 'w') as f:
+			f.write( json.dumps(dic, encoding="UTF-8",indent = 4,sort_keys = True, ensure_ascii=False) )
+		print('index.json creat!' )
+#main
 def main() :
     wordCounter = WordCounter()
     wordCounter.run()
